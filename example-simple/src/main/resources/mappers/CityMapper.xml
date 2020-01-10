@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="canger.study.mapper.CityMapper">
+	<select id="selectCityById" parameterType="int" resultType="city">
+		select * from city where id=#{id}
+	</select>
+	<select id="selectCityByName" resultType="city">
+		select * from city c where c.name like concat("%",#{name},"%")
+	</select>
+	<select id="selectCityByIdAndTableName" resultType="city">
+		select * from ${table} where id=#{id}
+	</select>
+
+	<insert id="insertCity" parameterType="city">
+		insert into
+		city(name,countrycode,district,Population)
+		values (#{name},#{countryCode},#{district},#{population})
+	</insert>
+</mapper>

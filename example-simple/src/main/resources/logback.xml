@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.out</Target>
+        <encoding>utf-8</encoding>
+        <encoder>
+            <pattern>[%p][%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%c]%m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="OneFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 过滤器，只记录INFO级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <fileNamePattern>./logs/common-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%p][%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%logger.%method][%line]-%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="errFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/error-%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%p][%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%logger.%method][%line]-%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--websocket模块出错几率很小，日志单独打印，减少主模块日志体量-->
+    <logger name="canger.study.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="OneFile"/>
+        <appender-ref ref="errFile"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="OneFile"/>
+        <appender-ref ref="errFile"/>
+    </root>
+</configuration>
