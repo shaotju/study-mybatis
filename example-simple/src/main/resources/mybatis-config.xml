@@ -7,6 +7,7 @@
     </properties>
     <settings>
         <setting name="cacheEnabled" value="false"/>
+        <setting name="defaultExecutorType" value="BATCH"/>
         <!-- 开启驼峰命名(方便自动映射) -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
